@@ -29,7 +29,8 @@ class _ContextedNavigator<Event extends NavigationEvent>
 
   _ContextedNavigator({
     required this.delegate,
-  }) : super(NavigationInitial()) {
+  }) : super(NavigationState(
+            delegate.mapEventToPages(delegate.initialEvent, []))) {
     for (var interceptor in delegate.interceptors) {
       interceptor._pushPages = _pushPages;
     }
@@ -38,13 +39,14 @@ class _ContextedNavigator<Event extends NavigationEvent>
   static _ContextedNavigator<Event>? _of<Event extends NavigationEvent>(
       BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<_ContextedNavigatorInherited<Event>>()
+        .dependOnInheritedWidgetOfExactType<
+            _ContextedNavigatorInherited<Event>>()
         ?.navigator;
   }
 
   void _pushPages(List<Page> pages) {
     _pages = List.of(pages);
-    emit(NavigationUpdate(_pages));
+    emit(NavigationState(_pages));
   }
 
   bool _isNavigatorAllowBack() {
@@ -107,6 +109,6 @@ class _ContextedNavigator<Event extends NavigationEvent>
     for (var page in _pages) {
       assert(page.key != null);
     }
-    yield NavigationUpdate(_pages);
+    yield NavigationState(_pages);
   }
 }

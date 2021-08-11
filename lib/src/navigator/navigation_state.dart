@@ -1,18 +1,9 @@
 part of 'contexted_navigator.dart';
 
-abstract class NavigationState extends Equatable {
-  const NavigationState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class NavigationInitial extends NavigationState {}
-
-class NavigationUpdate extends NavigationState {
+class NavigationState extends Equatable {
   final List<Page> pages;
 
-  NavigationUpdate(this.pages);
+  const NavigationState(this.pages);
 
   @override
   List<Object?> get props => [pages];

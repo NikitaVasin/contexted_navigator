@@ -8,19 +8,14 @@ class ContextedNavigationContainer<Event extends NavigationEvent>
   Widget build(BuildContext context) {
     return BlocBuilder<_ContextedNavigator<Event>, NavigationState>(
       bloc: _ContextedNavigator._of<Event>(context),
-      buildWhen: (_, next) => next is NavigationUpdate,
       builder: (_, state) {
-        if (state is! NavigationUpdate) {
-          return SizedBox.shrink();
-        } else {
-          return Navigator(
-            pages: state.pages,
-            onPopPage: (route, result) {
-              _ContextedNavigator._of<Event>(context)?.pop();
-              return route.didPop(result);
-            },
-          );
-        }
+        return Navigator(
+          pages: state.pages,
+          onPopPage: (route, result) {
+            _ContextedNavigator._of<Event>(context)?.pop();
+            return route.didPop(result);
+          },
+        );
       },
     );
   }
@@ -39,13 +34,8 @@ class ContextedNavigationListenableBuilder<Event extends NavigationEvent>
   Widget build(BuildContext context) {
     return BlocBuilder<_ContextedNavigator<Event>, NavigationState>(
       bloc: _ContextedNavigator._of<Event>(context),
-      buildWhen: (_, next) => next is NavigationUpdate,
       builder: (context, state) {
-        if (state is! NavigationUpdate) {
-          return SizedBox.shrink();
-        } else {
-          return builder(context, state.pages);
-        }
+        return builder(context, state.pages);
       },
     );
   }
