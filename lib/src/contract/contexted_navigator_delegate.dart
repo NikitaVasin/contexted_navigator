@@ -20,12 +20,6 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
   /// начальный стек страниц
   List<Page> get initialPages;
 
-  /// обработка эвентов
-  Future<List<Page>> mapEventToPages(
-    Event event,
-    List<Page> pages,
-  );
-
   List<ContextedNavigatorInterceptor> get interceptors => [];
 
   /// схема диплинков навигатора
@@ -34,6 +28,14 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
   /// параметры задаются через `?`
   /// пример: `main/detectives/dashboard?id=123:info?id=123`
   Map<String, DeepLinkPageBuilder> get deepLinks => {};
+
+  /// обработка эвентов
+  Future<List<Page>> mapEventToPages(
+    Event event,
+    List<Page> pages,
+  ) async {
+    return pages;
+  }
 
   /// обработка системной кнопки назад
   Future<List<Page>> mapWillPopToPages(
