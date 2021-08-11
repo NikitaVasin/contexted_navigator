@@ -35,16 +35,17 @@ class TabsNavigator extends ContextedNavigatorDelegate<TabsChangeEvent> {
   }
 
   @override
-  TabsChangeEvent get initialEvent => TabsChangeEvent(0);
+  List<Page> get initialPages => [_getTab(0)];
 
   @override
-  List<Page> mapWillPopToPages(List<Page> pages) {
+  Future<List<Page>> mapWillPopToPages(List<Page> pages) async {
     parentNavigator?.pop();
     return pages;
   }
 
   @override
-  List<Page> mapEventToPages(TabsChangeEvent event, List<Page> pages) {
+  Future<List<Page>> mapEventToPages(
+      TabsChangeEvent event, List<Page> pages) async {
     return pages.where((element) {
       final isNotEqual = element.key != ValueKey(event.index);
       return isNotEqual;

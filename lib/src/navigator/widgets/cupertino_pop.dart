@@ -2,11 +2,13 @@ part of '../contexted_navigator.dart';
 
 /// вспомогательный миксин
 mixin CuperinoPopMixin<T> on PageRoute<T> {
-  
   _ContextedNavigator? get currentNavigator;
 
   NavigatorStack? get stack;
 
+  /// проверка сделана для ios чтобы при наложении навигаторов
+  /// не происходило закрытие сразу нескольких страниц вместе с
+  /// вложенными навигаторам
   @protected
   bool get hasScopedWillPopCallback {
     final currentStack = stack?.findStack(currentNavigator.runtimeType);
@@ -68,41 +70,15 @@ class CustomMaterialPage<T> extends Page<T> {
 }
 
 class _CustomPageBasedMaterialPageRoute<T> extends PageRoute<T>
-    with MaterialRouteTransitionMixin<T> {
+    with MaterialRouteTransitionMixin<T>, CuperinoPopMixin<T> {
   _CustomPageBasedMaterialPageRoute({
     required CustomMaterialPage<T> page,
   }) : super(settings: page) {
     assert(opaque);
   }
 
-  _ContextedNavigator? currentNavigator;
-  NavigatorStack? stack;
-
-  /// проверка сделана для ios чтобы при наложении навигаторов
-  /// не происходило закрытие сразу нескольких страниц вместе с
-  /// вложенными навигаторам
-  @protected
-  bool get hasScopedWillPopCallback {
-    final currentStack = stack?.findStack(currentNavigator.runtimeType);
-    final lastActive = stack?.findLastActive();
-    if (currentStack?.isActive ?? true) {
-      if ((currentNavigator ?? lastActive) != lastActive) {
-        final list = currentStack?.children ?? <NavigatorStack>[];
-        if (list.isNotEmpty) {
-          for (var child in list) {
-            if (child.isActive && child._navigator._pages.length < 2) {
-              return false;
-            }
-          }
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    }
-    return true;
-  }
+  _ContextedNavigator? _currentNavigator;
+  NavigatorStack? _stack;
 
   CustomMaterialPage<T> get _page => settings as CustomMaterialPage<T>;
 
@@ -118,14 +94,21 @@ class _CustomPageBasedMaterialPageRoute<T> extends PageRoute<T>
   @override
   Widget buildContent(BuildContext context) {
     if (currentNavigator == null) {
-      currentNavigator = context
+      _currentNavigator = context
           .dependOnInheritedWidgetOfExactType<
               _ContextedNavigatorInheritedWithoutType>()
           ?.navigator;
     }
     if (stack == null) {
-      stack = NavigatorStack.of(context);
+      _stack = NavigatorStack.of(context);
     }
     return _page.child;
   }
+
+  @override
+  _ContextedNavigator<NavigationEvent>? get currentNavigator =>
+      _currentNavigator;
+
+  @override
+  NavigatorStack? get stack => _stack;
 }

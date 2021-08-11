@@ -1,4 +1,3 @@
-
 import 'package:contexted_navigator/contexted_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:navigator_example/main/screens/login_screen.dart';
@@ -47,7 +46,7 @@ class MainNavigator extends ContextedNavigatorDelegate<MainEvent> {
       };
 
   @override
-  List<Page> mapEventToPages(MainEvent event, List<Page> pages) {
+  Future<List<Page>> mapEventToPages(MainEvent event, List<Page> pages) async {
     if (event is MainSplashEvent) {
       pages.add(_splashPage);
     } else if (event is MainLoginEvent) {
@@ -61,7 +60,5 @@ class MainNavigator extends ContextedNavigatorDelegate<MainEvent> {
   }
 
   @override
-  MainEvent get initialEvent => MainSplashEvent();
+  List<Page> get initialPages => [_splashPage];
 }
-
-

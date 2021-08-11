@@ -11,20 +11,20 @@ class TabCSecondEvent extends TabCEvent {}
 
 class TabCNavigator extends ContextedNavigatorDelegate<TabCEvent> {
   Page get _firstPage => CustomMaterialPage(
-    key: ValueKey('first'),
+        key: ValueKey('first'),
         child: TabCFirstScreen(),
       );
 
   Page get _secondPage => CustomMaterialPage(
-    key: ValueKey('second'),
+        key: ValueKey('second'),
         child: TabCSecondScreen(),
       );
 
   @override
-  TabCEvent get initialEvent => TabCInitialEvent();
+  List<Page> get initialPages => [_firstPage];
 
   @override
-  List<Page> mapEventToPages(TabCEvent event, List<Page> pages) {
+  Future<List<Page>> mapEventToPages(TabCEvent event, List<Page> pages) async {
     if (event is TabCInitialEvent) {
       return pages..add(_firstPage);
     } else if (event is TabCSecondEvent) {

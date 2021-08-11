@@ -59,7 +59,8 @@ class ContextedNavigatorProvider<Event extends NavigationEvent>
   static ContextedNavigator<Event>? of<Event extends NavigationEvent>(
       BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<_ContextedNavigatorInherited<Event>>()
+        .dependOnInheritedWidgetOfExactType<
+            _ContextedNavigatorInherited<Event>>()
         ?.navigator;
   }
 
@@ -89,18 +90,27 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
 
       /// начальная инициализация навигатора и его зависимостей
       _delegate = createDelegate(context);
-      navigator = _ContextedNavigator<Event>(delegate: _delegate);
 
       /// слушаем нотифаер диплинка родительского навигатора
       parentNavigator?._deepLinkNotifier.addListener(_parentUriListener);
 
       /// выполняем первый колбэк для проверки запущенного диплинка
       if (parentNavigator != null &&
-          parentNavigator._deepLinkNotifier.value != null) {
-        navigator!.add(
-            NavigationDeepLinkEvent(parentNavigator._deepLinkNotifier.value!));
+          parentNavigator._deepLinkNotifier.value != null &&
+          parentNavigator._deepLinkNotifier.value!.isNotEmpty) {
+        final deepPages = _delegate.mapDeepLinkToPages(
+          parentNavigator._deepLinkNotifier.value!,
+          [],
+        );
+        navigator = _ContextedNavigator<Event>(
+          delegate: _delegate,
+          initialPages: deepPages.isEmpty ? _delegate.initialPages : deepPages,
+        );
       } else {
-        navigator!.add(_delegate.initialEvent);
+        navigator = _ContextedNavigator<Event>(
+          delegate: _delegate,
+          initialPages: _delegate.initialPages,
+        );
       }
 
       /// устанавливаем делегату ссылку на текущий навигатор

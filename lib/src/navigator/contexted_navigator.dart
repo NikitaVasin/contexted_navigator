@@ -29,8 +29,9 @@ class _ContextedNavigator<Event extends NavigationEvent>
 
   _ContextedNavigator({
     required this.delegate,
-  }) : super(NavigationState(
-            delegate.mapEventToPages(delegate.initialEvent, []))) {
+    required List<Page> initialPages,
+  }) : super(NavigationState(List.of(initialPages))) {
+    _pages = List.of(initialPages);
     for (var interceptor in delegate.interceptors) {
       interceptor._pushPages = _pushPages;
     }
@@ -101,9 +102,9 @@ class _ContextedNavigator<Event extends NavigationEvent>
       _pages = delegate.mapDeepLinkToPages(event.uri, List.of(_pages));
       _notifyChildrenDeepLink(event.uri);
     } else if (event is NavigationWillPopEvent) {
-      _pages = delegate.mapWillPopToPages(List.of(_pages));
+      _pages = await delegate.mapWillPopToPages(List.of(_pages));
     } else if (event is Event) {
-      _pages = delegate.mapEventToPages(event, List.of(_pages));
+      _pages = await delegate.mapEventToPages(event, List.of(_pages));
     }
     assert(_pages.isNotEmpty);
     for (var page in _pages) {

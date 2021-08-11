@@ -34,7 +34,8 @@ class SettingsNavigator extends ContextedNavigatorDelegate<SettingsEvent> {
       };
 
   @override
-  List<Page> mapEventToPages(SettingsEvent event, List<Page> pages) {
+  Future<List<Page>> mapEventToPages(
+      SettingsEvent event, List<Page> pages) async {
     if (event is SettingsInitialEvent) {
       return [_first()];
     } else if (event is SettingsSecondEvent) {
@@ -44,7 +45,7 @@ class SettingsNavigator extends ContextedNavigatorDelegate<SettingsEvent> {
   }
 
   @override
-  SettingsEvent get initialEvent => SettingsInitialEvent();
+  List<Page> get initialPages => [_first()];
 
   @override
   List<ContextedNavigatorInterceptor> get interceptors => [
