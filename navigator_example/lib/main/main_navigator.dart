@@ -46,7 +46,7 @@ class MainNavigator extends ContextedNavigatorDelegate<MainEvent> {
       };
 
   @override
-  Future<List<Page>> mapEventToPages(MainEvent event, List<Page> pages) async {
+  List<Page> mapEventToPages(MainEvent event, List<Page> pages) {
     if (event is MainSplashEvent) {
       pages.add(_splashPage);
     } else if (event is MainLoginEvent) {

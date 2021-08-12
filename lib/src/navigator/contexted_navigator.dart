@@ -102,9 +102,9 @@ class _ContextedNavigator<Event extends NavigationEvent>
       _pages = delegate.mapDeepLinkToPages(event.uri, List.of(_pages));
       _notifyChildrenDeepLink(event.uri);
     } else if (event is NavigationWillPopEvent) {
-      _pages = await delegate.mapWillPopToPages(List.of(_pages));
+      _pages = delegate.mapWillPopToPages(List.of(_pages));
     } else if (event is Event) {
-      _pages = await delegate.mapEventToPages(event, List.of(_pages));
+      _pages = delegate.mapEventToPages(event, List.of(_pages));
     }
     assert(_pages.isNotEmpty);
     for (var page in _pages) {

@@ -30,17 +30,17 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
   Map<String, DeepLinkPageBuilder> get deepLinks => {};
 
   /// обработка эвентов
-  Future<List<Page>> mapEventToPages(
+  List<Page> mapEventToPages(
     Event event,
     List<Page> pages,
-  ) async {
+  ) {
     return pages;
   }
 
   /// обработка системной кнопки назад
-  Future<List<Page>> mapWillPopToPages(
+  List<Page> mapWillPopToPages(
     List<Page> pages,
-  ) async {
+  ) {
     if (pages.length > 1) {
       return pages..removeLast();
     } else {

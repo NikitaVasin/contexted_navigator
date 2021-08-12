@@ -38,11 +38,11 @@ mixin CuperinoPopMixin<T> on PageRoute<T> {
 class CustomMaterialPage<T> extends Page<T> {
   /// Creates a material page.
   const CustomMaterialPage({
+    required LocalKey key,
     required this.child,
     this.allowBack = true,
     this.maintainState = true,
     this.fullscreenDialog = false,
-    LocalKey? key,
     String? name,
     Object? arguments,
     String? restorationId,

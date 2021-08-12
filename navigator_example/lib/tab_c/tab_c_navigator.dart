@@ -24,7 +24,10 @@ class TabCNavigator extends ContextedNavigatorDelegate<TabCEvent> {
   List<Page> get initialPages => [_firstPage];
 
   @override
-  Future<List<Page>> mapEventToPages(TabCEvent event, List<Page> pages) async {
+  List<Page> mapEventToPages(
+    TabCEvent event,
+    List<Page> pages,
+  ) {
     if (event is TabCInitialEvent) {
       return pages..add(_firstPage);
     } else if (event is TabCSecondEvent) {
