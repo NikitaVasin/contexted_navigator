@@ -82,4 +82,6 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
   /// для определения когда можно свайпом закрыть пейдж с этим навигатором
   /// актуально только для CupertinTransition
   bool allowNavigatorSwipe(List<Page> pages) => pages.length < 2;
+
+  Future<void> dispose() async {}
 }
