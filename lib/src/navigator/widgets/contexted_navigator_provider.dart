@@ -167,10 +167,10 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
   }
 
   @override
-  void dispose() async {
+  void dispose() {
     if (navigator != null) {
-      await navigator!.close();
-      await _delegate.dispose();
+      navigator!.close();
+      _delegate.dispose();
       navigator!._parentNavigator?._deepLinkNotifier
           .removeListener(_parentUriListener);
 
