@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of '../contexted_navigator.dart';
 
 class NoAnimationPage extends Page<dynamic> {
   const NoAnimationPage({
@@ -11,7 +11,6 @@ class NoAnimationPage extends Page<dynamic> {
   @override
   Route<dynamic> createRoute(BuildContext context) => PageRouteBuilder<dynamic>(
         settings: this,
-        pageBuilder: (_, __, ___) =>
-            child,
+        pageBuilder: (_, __, ___) => child,
       );
 }

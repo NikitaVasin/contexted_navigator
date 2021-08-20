@@ -13,6 +13,7 @@ part 'widgets/navigation_container.dart';
 part 'widgets/contexted_navigator_provider.dart';
 part 'widgets/navigator_stack_provider.dart';
 part 'widgets/cupertino_pop.dart';
+part 'widgets/no_animation_page.dart';
 part '../contract/navigator_stack.dart';
 part '../contract/contexted_navigator_delegate.dart';
 part '../contract/interceptor.dart';
