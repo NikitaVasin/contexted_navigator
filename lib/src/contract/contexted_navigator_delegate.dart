@@ -29,6 +29,8 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
   /// пример: `main/detectives/dashboard?id=123:info?id=123`
   Map<String, DeepLinkPageBuilder> get deepLinks => {};
 
+  HeroController? get heroController => HeroController();
+
   /// обработка эвентов
   List<Page> mapEventToPages(
     Event event,
