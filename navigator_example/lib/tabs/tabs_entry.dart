@@ -31,9 +31,12 @@ class TabsEntryPoint extends StatelessWidget {
                 padding: EdgeInsets.only(right: 20),
                 child: GestureDetector(
                   onTap: () => onSettingsClick!.call(),
-                  child: Icon(
-                    Icons.settings,
-                    color: Colors.white,
+                  child: Hero(
+                    tag: 'settings',
+                    child: Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -50,7 +53,8 @@ class TabsEntryPoint extends StatelessWidget {
             child: ContextedNavigationContainer<TabsChangeEvent>(),
           ),
         ),
-        bottomNavigationBar: ContextedNavigationListenableBuilder<TabsChangeEvent>(
+        bottomNavigationBar:
+            ContextedNavigationListenableBuilder<TabsChangeEvent>(
           builder: (_, pages) {
             return BottomNavigationBar(
               onTap: (index) =>

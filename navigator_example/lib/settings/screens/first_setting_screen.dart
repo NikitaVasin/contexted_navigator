@@ -24,6 +24,13 @@ class FirstSettingsScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Hero(
+              tag: 'settings',
+              child: Icon(
+                Icons.settings,
+                size: 100,
+              ),
+            ),
             Text("First settings screen"),
             if (id != null) Text(id!),
             TextField(),

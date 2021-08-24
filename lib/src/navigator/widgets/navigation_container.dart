@@ -6,6 +6,8 @@ class ContextedNavigationContainer<Event extends NavigationEvent>
 
   @override
   Widget build(BuildContext context) {
+    final heroController =
+        _ContextedNavigator._of<Event>(context)?.delegate.heroController;
     return BlocBuilder<_ContextedNavigator<Event>, NavigationState>(
       bloc: _ContextedNavigator._of<Event>(context),
       builder: (_, state) {
@@ -15,6 +17,7 @@ class ContextedNavigationContainer<Event extends NavigationEvent>
             _ContextedNavigator._of<Event>(context)?.pop();
             return route.didPop(result);
           },
+          observers: heroController != null ? [ heroController ] : [],
         );
       },
     );
@@ -23,7 +26,7 @@ class ContextedNavigationContainer<Event extends NavigationEvent>
 
 class ContextedNavigationListenableBuilder<Event extends NavigationEvent>
     extends StatelessWidget {
-  final Widget Function(BuildContext context, List<Page> pageKeys) builder;
+  final Widget Function(BuildContext context, List<Page> pages) builder;
 
   const ContextedNavigationListenableBuilder({
     Key? key,
