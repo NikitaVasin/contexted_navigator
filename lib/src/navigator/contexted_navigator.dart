@@ -68,6 +68,9 @@ class _ContextedNavigator<Event extends NavigationEvent>
   }
 
   @override
+  List<Page> get pages => _pages.toList();
+
+  @override
   void addEvent(Event event) => add(event);
 
   @override
@@ -87,6 +90,9 @@ class _ContextedNavigator<Event extends NavigationEvent>
   @override
   void pop() => add(NavigationWillPopEvent());
 
+  @override
+  void pushPages(List<Page> pages) => add(NavigationPageChangeEvent(pages));
+
   void _notifyChildrenDeepLink(String uri) {
     final clearUri = uri.startsWith('/') ? uri.replaceFirst('/', '') : uri;
     final sendUriList = clearUri.split('/');
@@ -102,6 +108,8 @@ class _ContextedNavigator<Event extends NavigationEvent>
     if (event is NavigationDeepLinkEvent) {
       _pages = delegate.mapDeepLinkToPages(event.uri, List.of(_pages));
       _notifyChildrenDeepLink(event.uri);
+    } else if (event is NavigationPageChangeEvent) {
+      _pages = event.pages;
     } else if (event is NavigationWillPopEvent) {
       _pages = delegate.mapWillPopToPages(List.of(_pages));
     } else if (event is Event) {
