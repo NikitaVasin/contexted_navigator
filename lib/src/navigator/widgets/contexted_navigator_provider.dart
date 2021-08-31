@@ -143,12 +143,10 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
   /// если наоборот то сообщаем всем дочерним стекам
   /// что они тоже не активны
   void _notifyActive() {
-    for (var child in stack?.children ?? <NavigatorStack>[]) {
-      if (child.navigator == navigator) {
-        child._isActive = ModalRoute.of(context)?.isCurrent ?? false;
-        _notifyActivePages(child.children);
-        break;
-      }
+    final currentStack = stack?.findStack(navigator.runtimeType);
+    currentStack?._isActive = ModalRoute.of(context)?.isCurrent ?? false;
+    if (currentStack?._children != null && !(currentStack?._isActive ?? true)) {
+      _notifyActivePages(currentStack!._children);
     }
   }
 

@@ -37,7 +37,8 @@ class NavigatorStack {
       return this;
     }
     for (var child in children) {
-      return child.findStack(currentNavigator);
+      final res = child.findStack(currentNavigator);
+      if (res != null) return res;
     }
   }
 
