@@ -17,6 +17,11 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
 
   ContextedNavigator<Event> get navigator => _navigator;
 
+  /// конекст текущего навигатора
+  late BuildContext _navigatorContext;
+
+  BuildContext get navigatorContext => _navigatorContext;
+
   /// начальный стек страниц
   List<Page> get initialPages;
 
