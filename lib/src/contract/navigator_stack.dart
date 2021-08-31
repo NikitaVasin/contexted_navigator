@@ -36,8 +36,20 @@ class NavigatorStack {
     if (navigator.runtimeType == currentNavigator) {
       return this;
     }
-    for (var child in children) {
+    for (var child in _children) {
       final res = child.findStack(currentNavigator);
+      if (res != null) return res;
+    }
+  }
+
+  /// возвращает часть стека в которой лежит указаный навигатор
+  /// возвращает `null` если подходящий стек не найден
+  NavigatorStack? findParentStack(Type currentNavigator) {
+    for (var child in _children) {
+      if (child.navigator.runtimeType == currentNavigator) {
+        return this;
+      }
+      final res = child.findParentStack(currentNavigator);
       if (res != null) return res;
     }
   }
@@ -51,10 +63,10 @@ class NavigatorStack {
   }
 
   _ContextedNavigator _deepFindLastActive() {
-    if (children.isEmpty) {
+    if (_children.isEmpty) {
       return _navigator;
     } else {
-      for (var child in children) {
+      for (var child in _children) {
         if (child.isActive) {
           return child._deepFindLastActive();
         }
@@ -72,10 +84,10 @@ class NavigatorStack {
   }
 
   NavigatorStack _deepFindLastActiveStack() {
-    if (children.isEmpty) {
+    if (_children.isEmpty) {
       return this;
     } else {
-      for (var child in children) {
+      for (var child in _children) {
         if (child.isActive) {
           return child._deepFindLastActiveStack();
         }
@@ -99,7 +111,9 @@ class NavigatorStack {
   }
 
   void _remove(_ContextedNavigator currentNavigator) {
-    _children.removeWhere((element) => element._navigator == currentNavigator);
+    final parentStack = findParentStack(currentNavigator.runtimeType);
+    parentStack?._children
+        .removeWhere((element) => element._navigator == currentNavigator);
   }
 
   void log() {

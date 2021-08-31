@@ -145,16 +145,31 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
   void _notifyActive() {
     final currentStack = stack?.findStack(navigator.runtimeType);
     currentStack?._isActive = ModalRoute.of(context)?.isCurrent ?? false;
-    if (currentStack?._children != null && !(currentStack?._isActive ?? true)) {
-      _notifyActivePages(currentStack!._children);
+    if (currentStack?._children != null) {
+      if (currentStack!._isActive) {
+        _notifyActivePages(currentStack._children);
+      } else {
+        _notifyNotActivePages(currentStack._children);
+      }
     }
   }
 
   /// рекурсия для оповещения дочерних навигаторов
   void _notifyActivePages(List<NavigatorStack> children) {
     for (var child in children) {
-      child._isActive = ModalRoute.of(context)?.isCurrent ?? false;
+      child._isActive =
+          ModalRoute.of(child._navigator.delegate.navigatorContext)
+                  ?.isCurrent ??
+              false;
       _notifyActivePages(child._children);
+    }
+  }
+
+  /// рекурсия для оповещения дочерних навигаторов
+  void _notifyNotActivePages(List<NavigatorStack> children) {
+    for (var child in children) {
+      child._isActive = false;
+      _notifyNotActivePages(child._children);
     }
   }
 
