@@ -114,7 +114,9 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
       }
 
       /// устанавливаем делегату ссылку на текущий навигатор
+      /// и его конекст
       _delegate._navigator = navigator!;
+      _delegate._navigatorContext = context;
 
       stack = NavigatorStack.of(context);
 
