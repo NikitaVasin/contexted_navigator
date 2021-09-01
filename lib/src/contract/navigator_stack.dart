@@ -31,6 +31,19 @@ class NavigatorStack {
   }
 
   /// возвращает часть стека в которой лежит указаный навигатор
+  /// по типу эвента
+  /// возвращает `null` если подходящий стек не найден
+  NavigatorStack? findStackByEventType<Event extends NavigationEvent>() {
+    if (navigator is _ContextedNavigator<Event>) {
+      return this;
+    }
+    for (var child in _children) {
+      final res = child.findStackByEventType<Event>();
+      if (res != null) return res;
+    }
+  }
+
+  /// возвращает часть стека в которой лежит указаный навигатор
   /// возвращает `null` если подходящий стек не найден
   NavigatorStack? findStack(Type currentNavigator) {
     if (navigator.runtimeType == currentNavigator) {
