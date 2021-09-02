@@ -5,14 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
-import '../contract/contexted_navigator.dart';
 
+part '../contract/contexted_navigator.dart';
 part 'navigation_event.dart';
 part 'navigation_state.dart';
 part 'widgets/navigation_container.dart';
 part 'widgets/contexted_navigator_provider.dart';
 part 'widgets/navigator_stack_provider.dart';
 part 'widgets/cupertino_pop.dart';
+part 'widgets/contexted_page.dart';
+part 'widgets/contexted_material_page.dart';
 part 'widgets/no_animation_page.dart';
 part '../contract/navigator_stack.dart';
 part '../contract/contexted_navigator_delegate.dart';
@@ -26,11 +28,11 @@ class _ContextedNavigator<Event extends NavigationEvent>
 
   _ContextedNavigator? _parentNavigator;
 
-  List<Page> _pages = [];
+  List<CustomMaterialPage> _pages = [];
 
   _ContextedNavigator({
     required this.delegate,
-    required List<Page> initialPages,
+    required List<CustomMaterialPage> initialPages,
   }) : super(NavigationState(List.of(initialPages))) {
     _pages = List.of(initialPages);
     for (var interceptor in delegate.interceptors) {
@@ -46,7 +48,7 @@ class _ContextedNavigator<Event extends NavigationEvent>
         ?.navigator;
   }
 
-  void _pushPages(List<Page> pages) {
+  void _pushPages(List<CustomMaterialPage> pages) {
     _pages = List.of(pages);
     emit(NavigationState(_pages));
   }
@@ -68,7 +70,7 @@ class _ContextedNavigator<Event extends NavigationEvent>
   }
 
   @override
-  List<Page> get pages => _pages.toList();
+  List<CustomMaterialPage> get pages => _pages.toList();
 
   @override
   void addEvent(Event event) => add(event);
@@ -91,7 +93,7 @@ class _ContextedNavigator<Event extends NavigationEvent>
   void pop() => add(NavigationWillPopEvent());
 
   @override
-  void pushPages(List<Page> pages) => add(NavigationPageChangeEvent(pages));
+  void pushPages(List<CustomMaterialPage> pages) => add(NavigationPageChangeEvent(pages));
 
   void _notifyChildrenDeepLink(String uri) {
     final clearUri = uri.startsWith('/') ? uri.replaceFirst('/', '') : uri;

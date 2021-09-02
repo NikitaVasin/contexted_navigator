@@ -14,7 +14,7 @@ class TabsChangeEvent extends NavigationEvent {
 }
 
 class TabsNavigator extends ContextedNavigatorDelegate<TabsChangeEvent> {
-  Page _getTab(int index) {
+  CustomMaterialPage _getTab(int index) {
     switch (index) {
       case 0:
         return CustomMaterialPage(
@@ -35,18 +35,18 @@ class TabsNavigator extends ContextedNavigatorDelegate<TabsChangeEvent> {
   }
 
   @override
-  List<Page> get initialPages => [_getTab(0)];
+  List<CustomMaterialPage> get initialPages => [_getTab(0)];
 
   @override
-  List<Page> mapWillPopToPages(List<Page> pages) {
+  List<CustomMaterialPage> mapWillPopToPages(List<CustomMaterialPage> pages) {
     parentNavigator?.pop();
     return pages;
   }
 
   @override
-  List<Page> mapEventToPages(
+  List<CustomMaterialPage> mapEventToPages(
     TabsChangeEvent event,
-    List<Page> pages,
+    List<CustomMaterialPage> pages,
   ) {
     return pages.where((element) {
       final isNotEqual = element.key != ValueKey(event.index);

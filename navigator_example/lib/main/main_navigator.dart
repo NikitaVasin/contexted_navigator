@@ -16,22 +16,22 @@ class MainTabsEvent extends MainEvent {}
 class MainSettingsEvent extends MainEvent {}
 
 class MainNavigator extends ContextedNavigatorDelegate<MainEvent> {
-  Page get _splashPage => CustomMaterialPage(
+  CustomMaterialPage get _splashPage => CustomMaterialPage(
         key: ValueKey('splash'),
         child: SplashScreen(),
       );
 
-  Page get _loginScreen => CustomMaterialPage(
+  CustomMaterialPage get _loginScreen => CustomMaterialPage(
         key: ValueKey('logn'),
         child: LoginScreen(),
       );
 
-  Page get _settingScreen => CustomMaterialPage(
+  CustomMaterialPage get _settingScreen => CustomMaterialPage(
         key: ValueKey('setting'),
         child: SettingsEntryPoint(),
       );
 
-  Page get _tabsScreen => CustomMaterialPage(
+  CustomMaterialPage get _tabsScreen => CustomMaterialPage(
         key: ValueKey('tabs'),
         child: TabsEntryPoint(
           onSettingsClick: () => navigator.addEvent(MainSettingsEvent()),
@@ -46,7 +46,7 @@ class MainNavigator extends ContextedNavigatorDelegate<MainEvent> {
       };
 
   @override
-  List<Page> mapEventToPages(MainEvent event, List<Page> pages) {
+  List<CustomMaterialPage> mapEventToPages(MainEvent event, List<CustomMaterialPage> pages) {
     if (event is MainSplashEvent) {
       pages.add(_splashPage);
     } else if (event is MainLoginEvent) {
@@ -60,5 +60,5 @@ class MainNavigator extends ContextedNavigatorDelegate<MainEvent> {
   }
 
   @override
-  List<Page> get initialPages => [_splashPage];
+  List<CustomMaterialPage> get initialPages => [_splashPage];
 }

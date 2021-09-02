@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
-
-import '../navigator/contexted_navigator.dart';
+part of '../navigator/contexted_navigator.dart';
 
 /// Интерфейс навигатора
 abstract class ContextedNavigator<Event extends NavigationEvent> {
-  List<Page> get pages;
+  List<CustomMaterialPage> get pages;
 
   /// добавление новго эвента в навигатор
   void addEvent(Event event);
@@ -13,7 +11,7 @@ abstract class ContextedNavigator<Event extends NavigationEvent> {
   void pop();
 
   /// принудительно обновить список страниц навигатора
-  void pushPages(List<Page> pages);
+  void pushPages(List<CustomMaterialPage> pages);
 
   /// запуск диплинка (в конексте древа этого навигатора)
   void startDeepLink(String uri);

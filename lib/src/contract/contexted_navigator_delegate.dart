@@ -1,7 +1,7 @@
 part of '../navigator/contexted_navigator.dart';
 
 /// билдер для дииплинк эвентов
-typedef DeepLinkPageBuilder = Page Function(
+typedef DeepLinkPageBuilder = CustomMaterialPage Function(
   Map<String, String> params,
 );
 
@@ -23,7 +23,7 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
   BuildContext get navigatorContext => _navigatorContext;
 
   /// начальный стек страниц
-  List<Page> get initialPages;
+  List<CustomMaterialPage> get initialPages;
 
   List<ContextedNavigatorInterceptor> get interceptors => [];
 
@@ -37,16 +37,16 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
   HeroController? get heroController => HeroController();
 
   /// обработка эвентов
-  List<Page> mapEventToPages(
+  List<CustomMaterialPage> mapEventToPages(
     Event event,
-    List<Page> pages,
+    List<CustomMaterialPage> pages,
   ) {
     return pages;
   }
 
   /// обработка системной кнопки назад
-  List<Page> mapWillPopToPages(
-    List<Page> pages,
+  List<CustomMaterialPage> mapWillPopToPages(
+    List<CustomMaterialPage> pages,
   ) {
     if (pages.length > 1) {
       return pages..removeLast();
@@ -61,14 +61,14 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
   }
 
   /// парсинг диплинка
-  List<Page> mapDeepLinkToPages(
+  List<CustomMaterialPage> mapDeepLinkToPages(
     String uri,
-    List<Page> pages,
+    List<CustomMaterialPage> pages,
   ) {
     final clearUri = uri.startsWith('/') ? uri.replaceFirst('/', '') : uri;
     final currentPath = clearUri.split('/').firstOrNull;
     final pagesPath = currentPath?.split(':');
-    final newPages = <Page>[];
+    final newPages = <CustomMaterialPage>[];
     for (var pagePath in pagesPath ?? <String>[]) {
       final newUri = Uri.tryParse(pagePath);
       if (deepLinks.containsKey(newUri?.path)) {
@@ -88,7 +88,7 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
 
   /// для определения когда можно свайпом закрыть пейдж с этим навигатором
   /// актуально только для CupertinTransition
-  bool allowNavigatorSwipe(List<Page> pages) => pages.length < 2;
+  bool allowNavigatorSwipe(List<CustomMaterialPage> pages) => pages.length < 2;
 
   Future<void> dispose() async {}
 }

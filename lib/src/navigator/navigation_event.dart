@@ -19,7 +19,7 @@ class NavigationWillPopEvent extends NavigationEvent {
 
 /// принудительно обновляет стек страниц в навигаторе
 class NavigationPageChangeEvent extends NavigationEvent {
-  final List<Page> pages;
+  final List<CustomMaterialPage> pages;
 
   NavigationPageChangeEvent(this.pages);
 

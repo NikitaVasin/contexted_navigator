@@ -4,9 +4,9 @@ part of '../navigator/contexted_navigator.dart';
 abstract class ContextedNavigatorInterceptor {
   /// функция для принудительной доставки страниц в навигатор
   /// инитиализируется при создании навигатора
-  late Function(List<Page> pages) _pushPages;
+  late Function(List<CustomMaterialPage> pages) _pushPages;
 
-  Function(List<Page> pages) get pushPages => _pushPages;
+  Function(List<CustomMaterialPage> pages) get pushPages => _pushPages;
 
   /// активен ли прерыватель
   bool isActive = true;

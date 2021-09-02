@@ -2,7 +2,7 @@ part of '../contexted_navigator.dart';
 
 /// вспомогательный миксин
 mixin CuperinoPopMixin<T> on PageRoute<T> {
-  _ContextedNavigator? get currentNavigator;
+  ContextedNavigator? get currentNavigator;
 
   NavigatorStack? get stack;
 
@@ -77,7 +77,7 @@ class _CustomPageBasedMaterialPageRoute<T> extends PageRoute<T>
     assert(opaque);
   }
 
-  _ContextedNavigator? _currentNavigator;
+  ContextedNavigator? _currentNavigator;
   NavigatorStack? _stack;
 
   CustomMaterialPage<T> get _page => settings as CustomMaterialPage<T>;
@@ -96,7 +96,7 @@ class _CustomPageBasedMaterialPageRoute<T> extends PageRoute<T>
     if (currentNavigator == null) {
       _currentNavigator = context
           .dependOnInheritedWidgetOfExactType<
-              _ContextedNavigatorInheritedWithoutType>()
+              ContextedNavigatorInheritedWithoutType>()
           ?.navigator;
     }
     if (stack == null) {
@@ -106,7 +106,7 @@ class _CustomPageBasedMaterialPageRoute<T> extends PageRoute<T>
   }
 
   @override
-  _ContextedNavigator<NavigationEvent>? get currentNavigator =>
+  ContextedNavigator<NavigationEvent>? get currentNavigator =>
       _currentNavigator;
 
   @override

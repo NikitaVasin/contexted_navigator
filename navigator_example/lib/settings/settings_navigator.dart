@@ -14,14 +14,14 @@ class SettingsNavigator extends ContextedNavigatorDelegate<SettingsEvent> {
   final CheckFinishInterceptor checkFinishInterceptors =
       CheckFinishInterceptor();
 
-  Page _first([String? id]) => CustomMaterialPage(
+  CustomMaterialPage _first([String? id]) => CustomMaterialPage(
         key: ValueKey('first'),
         child: FirstSettingsScreen(
           id: id,
         ),
       );
 
-  Page get _second => CustomMaterialPage(
+  CustomMaterialPage get _second => CustomMaterialPage(
         key: ValueKey('second'),
         child: SecondSettingsScreen(),
       );
@@ -34,9 +34,9 @@ class SettingsNavigator extends ContextedNavigatorDelegate<SettingsEvent> {
       };
 
   @override
-  List<Page> mapEventToPages(
+  List<CustomMaterialPage> mapEventToPages(
     SettingsEvent event,
-    List<Page> pages,
+    List<CustomMaterialPage> pages,
   ) {
     if (event is SettingsInitialEvent) {
       return [_first()];
@@ -47,7 +47,7 @@ class SettingsNavigator extends ContextedNavigatorDelegate<SettingsEvent> {
   }
 
   @override
-  List<Page> get initialPages => [_first()];
+  List<CustomMaterialPage> get initialPages => [_first()];
 
   @override
   List<ContextedNavigatorInterceptor> get interceptors => [
