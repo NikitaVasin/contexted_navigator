@@ -125,6 +125,7 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
 
       /// устанавливаем текущему навигатору ссылку на родительский навигатор
       navigator!._parentNavigator = parentNavigator;
+      navigator!._rootNavigator = stack?._navigator ?? navigator!;
 
       /// создаем дочерний стек
       if (parentNavigator != null) {

@@ -25,6 +25,7 @@ class _ContextedNavigator<Event extends NavigationEvent>
   final ContextedNavigatorDelegate<Event> delegate;
 
   _ContextedNavigator? _parentNavigator;
+  late _ContextedNavigator _rootNavigator;
 
   List<Page> _pages = [];
 
@@ -81,7 +82,11 @@ class _ContextedNavigator<Event extends NavigationEvent>
       List.of(delegate.interceptors);
 
   @override
-  void startDeepLink(String uri) => add(NavigationDeepLinkEvent(uri));
+  void startDeepLink(String uri) =>
+      _rootNavigator.add(NavigationDeepLinkEvent(uri));
+
+  @override
+  void startLocalDeepLink(String uri) => add(NavigationDeepLinkEvent(uri));
 
   @override
   void addInterceptor(ContextedNavigatorInterceptor interceptor) =>

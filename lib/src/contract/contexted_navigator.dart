@@ -15,8 +15,11 @@ abstract class ContextedNavigator<Event extends NavigationEvent> {
   /// принудительно обновить список страниц навигатора
   void pushPages(List<Page> pages);
 
-  /// запуск диплинка (в конексте древа этого навигатора)
+  /// запуск диплинка (в рутовом навигаторе)
   void startDeepLink(String uri);
+
+  /// запуск диплинка (в конексте древа этого навигатора)
+  void startLocalDeepLink(String uri);
 
   /// список обработчиков евентов
   List<ContextedNavigatorInterceptor> get interceptors;
