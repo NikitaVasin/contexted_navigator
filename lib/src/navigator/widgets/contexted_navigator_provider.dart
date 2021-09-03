@@ -102,6 +102,7 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
           parentNavigator._deepLinkNotifier.value!,
           [],
         );
+        parentNavigator._deepLinkNotifier.value = null;
         navigator = _ContextedNavigator<Event>(
           delegate: _delegate,
           initialPages: deepPages.isEmpty ? _delegate.initialPages : deepPages,
@@ -177,8 +178,8 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
   /// слушатель диплинка родительского навигатора
   void _parentUriListener() {
     if (navigator?._parentNavigator?._deepLinkNotifier.value != null) {
-      navigator!
-          .startDeepLink(navigator!._parentNavigator!._deepLinkNotifier.value!);
+      navigator!.startLocalDeepLink(
+          navigator!._parentNavigator!._deepLinkNotifier.value!);
     }
   }
 
