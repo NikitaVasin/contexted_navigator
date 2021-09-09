@@ -135,11 +135,14 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
             ?._add(navigator!);
       }
 
-      /// вызываем первый колбэк делегата, 
+      _notifyActive();
+
+      /// вызываем первый колбэк делегата,
       /// в котором можно безопасно обращаться к его полям
       _delegate.initState();
+    } else {
+      _notifyActive();
     }
-    _notifyActive();
     super.didChangeDependencies();
   }
 
