@@ -134,6 +134,10 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
             ?.findStack(parentNavigator.runtimeType)
             ?._add(navigator!);
       }
+
+      /// вызываем первый колбэк делегата, 
+      /// в котором можно безопасно обращаться к его полям
+      _delegate.initState();
     }
     _notifyActive();
     super.didChangeDependencies();

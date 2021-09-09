@@ -36,6 +36,10 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
 
   HeroController? get heroController => HeroController();
 
+  /// инициализирующий колбэк, 
+  /// после его вызова все поля делегата проинициализированы
+  void initState() {}
+
   /// обработка эвентов
   List<Page> mapEventToPages(
     Event event,
