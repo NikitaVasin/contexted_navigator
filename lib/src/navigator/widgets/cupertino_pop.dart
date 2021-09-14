@@ -43,6 +43,10 @@ class CustomMaterialPage<T> extends Page<T> {
     this.allowBack = true,
     this.maintainState = true,
     this.fullscreenDialog = false,
+    this.opaque,
+    this.barrierColor,
+    this.barrierLabel,
+    this.barrierDismissible,
     String? name,
     Object? arguments,
     String? restorationId,
@@ -60,6 +64,14 @@ class CustomMaterialPage<T> extends Page<T> {
   final bool fullscreenDialog;
 
   final bool allowBack;
+
+  final bool? opaque;
+
+  final bool? barrierDismissible;
+
+  final Color? barrierColor;
+
+  final String? barrierLabel;
 
   @override
   Route<T> createRoute(BuildContext context) {
@@ -88,6 +100,20 @@ class _CustomPageBasedMaterialPageRoute<T> extends PageRoute<T>
   @override
   bool get fullscreenDialog => _page.fullscreenDialog;
 
+  @override
+  bool get opaque => _page.opaque ?? super.opaque;
+
+  @override
+  Color? get barrierColor => _page.barrierColor ?? super.barrierColor;
+
+  @override
+  String? get barrierLabel => _page.barrierLabel ?? super.barrierLabel;
+
+  @override
+  bool get barrierDismissible =>
+      _page.barrierDismissible ?? super.barrierDismissible;
+
+  @override
   @override
   String get debugLabel => '${super.debugLabel}(${_page.name})';
 
