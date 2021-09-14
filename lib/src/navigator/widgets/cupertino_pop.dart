@@ -85,9 +85,7 @@ class _CustomPageBasedMaterialPageRoute<T> extends PageRoute<T>
     with MaterialRouteTransitionMixin<T>, CuperinoPopMixin<T> {
   _CustomPageBasedMaterialPageRoute({
     required CustomMaterialPage<T> page,
-  }) : super(settings: page) {
-    assert(opaque);
-  }
+  }) : super(settings: page);
 
   _ContextedNavigator? _currentNavigator;
   NavigatorStack? _stack;
