@@ -95,23 +95,17 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
       parentNavigator?._deepLinkNotifier.addListener(_parentUriListener);
 
       /// выполняем первый колбэк для проверки запущенного диплинка
+
+      navigator = _ContextedNavigator<Event>(
+        delegate: _delegate,
+        initialPages: _delegate.initialPages,
+      );
+
       if (parentNavigator != null &&
           parentNavigator._deepLinkNotifier.value != null &&
           parentNavigator._deepLinkNotifier.value!.isNotEmpty) {
-        final deepPages = _delegate.mapDeepLinkToPages(
-          parentNavigator._deepLinkNotifier.value!,
-          [],
-        );
+        navigator!.startLocalDeepLink(parentNavigator._deepLinkNotifier.value!);
         parentNavigator._deepLinkNotifier.value = null;
-        navigator = _ContextedNavigator<Event>(
-          delegate: _delegate,
-          initialPages: deepPages.isEmpty ? _delegate.initialPages : deepPages,
-        );
-      } else {
-        navigator = _ContextedNavigator<Event>(
-          delegate: _delegate,
-          initialPages: _delegate.initialPages,
-        );
       }
 
       /// устанавливаем делегату ссылку на текущий навигатор
@@ -204,6 +198,18 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
     super.dispose();
   }
 
+  Widget _buildNavigator(BuildContext context) {
+    return _ContextedNavigatorInheritedWithoutType(
+      navigator: navigator!,
+      child: _ContextedNavigatorInherited<Event>(
+        navigator: navigator!,
+        child: Builder(
+          builder: widget.builder,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (stack == null) {
@@ -222,27 +228,11 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
               last?.add(NavigationWillPopEvent());
               return false;
             },
-            child: _ContextedNavigatorInheritedWithoutType(
-              navigator: navigator!,
-              child: _ContextedNavigatorInherited<Event>(
-                navigator: navigator!,
-                child: Builder(
-                  builder: widget.builder,
-                ),
-              ),
-            ),
+            child: _buildNavigator(context),
           ),
         ),
       );
     }
-    return _ContextedNavigatorInheritedWithoutType(
-      navigator: navigator!,
-      child: _ContextedNavigatorInherited<Event>(
-        navigator: navigator!,
-        child: Builder(
-          builder: widget.builder,
-        ),
-      ),
-    );
+    return _buildNavigator(context);
   }
 }
