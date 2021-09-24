@@ -111,7 +111,7 @@ class _ContextedNavigator<Event extends NavigationEvent>
     NavigationEvent event,
   ) async* {
     if (event is NavigationDeepLinkEvent) {
-      _pages = delegate.mapDeepLinkToPages(event.uri, List.of(_pages));
+      _pages = await delegate.mapDeepLinkToPages(event.uri, List.of(_pages));
       _notifyChildrenDeepLink(event.uri);
     } else if (event is NavigationPageChangeEvent) {
       _pages = event.pages;

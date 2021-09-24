@@ -1,7 +1,7 @@
 part of '../navigator/contexted_navigator.dart';
 
 /// билдер для дииплинк эвентов
-typedef DeepLinkPageBuilder = Page Function(
+typedef DeepLinkPageBuilder = Future<Page> Function(
   Map<String, String> params,
 );
 
@@ -36,7 +36,7 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
 
   HeroController? get heroController => HeroController();
 
-  /// инициализирующий колбэк, 
+  /// инициализирующий колбэк,
   /// после его вызова все поля делегата проинициализированы
   void initState() {}
 
@@ -65,10 +65,10 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
   }
 
   /// парсинг диплинка
-  List<Page> mapDeepLinkToPages(
+  Future<List<Page>> mapDeepLinkToPages(
     String uri,
     List<Page> pages,
-  ) {
+  ) async {
     final clearUri = uri.startsWith('/') ? uri.replaceFirst('/', '') : uri;
     final currentPath = clearUri.split('/').firstOrNull;
     final pagesPath = currentPath?.split(':');
@@ -76,8 +76,8 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
     for (var pagePath in pagesPath ?? <String>[]) {
       final newUri = Uri.tryParse(pagePath);
       if (deepLinks.containsKey(newUri?.path)) {
-        newPages
-            .add(deepLinks[newUri?.path]!.call(newUri?.queryParameters ?? {}));
+        newPages.add(
+            await deepLinks[newUri?.path]!.call(newUri?.queryParameters ?? {}));
 
         /// если навигатор успешно обработал диплинк
         /// обнуляем нотифайер родителя, что бы стейт диплинка не сохранился

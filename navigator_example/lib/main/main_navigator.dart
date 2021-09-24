@@ -40,9 +40,9 @@ class MainNavigator extends ContextedNavigatorDelegate<MainEvent> {
 
   @override
   Map<String, DeepLinkPageBuilder> get deepLinks => {
-        'login': (_) => _loginScreen,
-        'tabs': (_) => _tabsScreen,
-        'settings': (_) => _settingScreen,
+        'login': (_) async => _loginScreen,
+        'tabs': (_) async => _tabsScreen,
+        'settings': (_) async => _settingScreen,
       };
 
   @override

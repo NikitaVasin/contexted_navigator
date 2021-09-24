@@ -28,9 +28,9 @@ class SettingsNavigator extends ContextedNavigatorDelegate<SettingsEvent> {
 
   @override
   Map<String, DeepLinkPageBuilder> get deepLinks => {
-        'first': (params) =>
+        'first': (params) async =>
             params.containsKey('id') ? _first(params['id']!) : _first(),
-        'second': (_) => _second,
+        'second': (_) async => _second,
       };
 
   @override
