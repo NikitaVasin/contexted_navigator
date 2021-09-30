@@ -1,7 +1,7 @@
 part of '../navigator/contexted_navigator.dart';
 
 /// билдер для дииплинк эвентов
-typedef DeepLinkPageBuilder = Future<Page> Function(
+typedef DeepLinkPageBuilder = Future<List<Page>> Function(
   Map<String, String> params,
 );
 
@@ -76,7 +76,7 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
     for (var pagePath in pagesPath ?? <String>[]) {
       final newUri = Uri.tryParse(pagePath);
       if (deepLinks.containsKey(newUri?.path)) {
-        newPages.add(
+        newPages.addAll(
             await deepLinks[newUri?.path]!.call(newUri?.queryParameters ?? {}));
 
         /// если навигатор успешно обработал диплинк

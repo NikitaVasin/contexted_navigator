@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
@@ -124,6 +125,11 @@ class _ContextedNavigator<Event extends NavigationEvent>
     for (var page in _pages) {
       assert(page.key != null);
     }
+    final keysSet = _pages.map((e) => e.key).toSet().toList();
+    _pages = List.generate(
+      keysSet.length,
+      (index) => _pages.firstWhere((element) => element.key == keysSet[index]),
+    );
     yield NavigationState(_pages);
   }
 }
