@@ -94,6 +94,10 @@ class _ContextedNavigator<Event extends NavigationEvent>
       delegate.interceptors.add(interceptor);
 
   @override
+  void removeInterceptor(ContextedNavigatorInterceptor interceptor) =>
+      delegate.interceptors.remove(interceptor);
+
+  @override
   void pop() => add(NavigationWillPopEvent());
 
   @override

@@ -26,5 +26,7 @@ abstract class ContextedNavigator<Event extends NavigationEvent> {
 
   void addInterceptor(ContextedNavigatorInterceptor interceptor);
 
+  void removeInterceptor(ContextedNavigatorInterceptor interceptor);
+
   void clearInterceptors();
 }
