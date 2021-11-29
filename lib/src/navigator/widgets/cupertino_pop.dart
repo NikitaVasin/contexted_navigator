@@ -120,7 +120,7 @@ class _CustomPageBasedMaterialPageRoute<T> extends PageRoute<T>
     if (currentNavigator == null) {
       _currentNavigator = context
           .dependOnInheritedWidgetOfExactType<
-              _ContextedNavigatorInheritedWithoutType>()
+              ContextedNavigatorInheritedWithoutType>()
           ?.navigator;
     }
     if (stack == null) {

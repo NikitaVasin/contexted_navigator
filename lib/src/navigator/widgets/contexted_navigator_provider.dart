@@ -18,17 +18,17 @@ class _ContextedNavigatorInherited<Event extends NavigationEvent>
 
 /// для того чтобы можно было получить родительский навигатор
 /// без указания дженерика
-class _ContextedNavigatorInheritedWithoutType extends InheritedWidget {
+class ContextedNavigatorInheritedWithoutType extends InheritedWidget {
   final _ContextedNavigator navigator;
 
-  _ContextedNavigatorInheritedWithoutType({
+  ContextedNavigatorInheritedWithoutType({
     required this.navigator,
     required Widget child,
   }) : super(child: child);
 
   @override
   bool updateShouldNotify(
-      covariant _ContextedNavigatorInheritedWithoutType oldWidget) {
+      covariant ContextedNavigatorInheritedWithoutType oldWidget) {
     return navigator != oldWidget.navigator;
   }
 }
@@ -85,7 +85,7 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
       /// находим родительский навигатор если такой есть
       final parentNavigator = context
           .dependOnInheritedWidgetOfExactType<
-              _ContextedNavigatorInheritedWithoutType>()
+              ContextedNavigatorInheritedWithoutType>()
           ?.navigator;
 
       /// начальная инициализация навигатора и его зависимостей
@@ -198,7 +198,7 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
   }
 
   Widget _buildNavigator(BuildContext context) {
-    return _ContextedNavigatorInheritedWithoutType(
+    return ContextedNavigatorInheritedWithoutType(
       navigator: navigator!,
       child: _ContextedNavigatorInherited<Event>(
         navigator: navigator!,
