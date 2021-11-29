@@ -105,7 +105,6 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
           parentNavigator._deepLinkNotifier.value != null &&
           parentNavigator._deepLinkNotifier.value!.isNotEmpty) {
         navigator!.startLocalDeepLink(parentNavigator._deepLinkNotifier.value!);
-        parentNavigator._deepLinkNotifier.value = null;
       }
 
       /// устанавливаем делегату ссылку на текущий навигатор
@@ -177,7 +176,7 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
   }
 
   /// слушатель диплинка родительского навигатора
-  void _parentUriListener() {
+  void _parentUriListener() async {
     if (navigator?._parentNavigator?._deepLinkNotifier.value != null) {
       navigator!.startLocalDeepLink(
           navigator!._parentNavigator!._deepLinkNotifier.value!);
