@@ -18,17 +18,17 @@ class _ContextedNavigatorInherited<Event extends NavigationEvent>
 
 /// для того чтобы можно было получить родительский навигатор
 /// без указания дженерика
-class ContextedNavigatorInheritedWithoutType extends InheritedWidget {
+class _ContextedNavigatorInheritedWithoutType extends InheritedWidget {
   final _ContextedNavigator navigator;
 
-  ContextedNavigatorInheritedWithoutType({
+  _ContextedNavigatorInheritedWithoutType({
     required this.navigator,
     required Widget child,
   }) : super(child: child);
 
   @override
   bool updateShouldNotify(
-      covariant ContextedNavigatorInheritedWithoutType oldWidget) {
+      covariant _ContextedNavigatorInheritedWithoutType oldWidget) {
     return navigator != oldWidget.navigator;
   }
 }
@@ -64,6 +64,14 @@ class ContextedNavigatorProvider<Event extends NavigationEvent>
         ?.navigator;
   }
 
+  static ContextedNavigator? parentOf<Event extends NavigationEvent>(
+      BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<
+            _ContextedNavigatorInheritedWithoutType>()
+        ?.navigator;
+  }
+
   @override
   _ContextedNavigatorProviderState<Event> createState() =>
       _ContextedNavigatorProviderState<Event>(createDelegate);
@@ -85,7 +93,7 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
       /// находим родительский навигатор если такой есть
       final parentNavigator = context
           .dependOnInheritedWidgetOfExactType<
-              ContextedNavigatorInheritedWithoutType>()
+              _ContextedNavigatorInheritedWithoutType>()
           ?.navigator;
 
       /// начальная инициализация навигатора и его зависимостей
@@ -198,7 +206,7 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
   }
 
   Widget _buildNavigator(BuildContext context) {
-    return ContextedNavigatorInheritedWithoutType(
+    return _ContextedNavigatorInheritedWithoutType(
       navigator: navigator!,
       child: _ContextedNavigatorInherited<Event>(
         navigator: navigator!,
