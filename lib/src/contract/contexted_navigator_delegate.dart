@@ -25,6 +25,8 @@ abstract class ContextedNavigatorDelegate<Event extends NavigationEvent> {
   /// начальный стек страниц
   List<Page> get initialPages;
 
+  List<ContextedNavigatorInterceptor> _interceptors = [];
+
   List<ContextedNavigatorInterceptor> get interceptors => [];
 
   /// схема диплинков навигатора

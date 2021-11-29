@@ -35,7 +35,8 @@ class _ContextedNavigator<Event extends NavigationEvent>
     required List<Page> initialPages,
   }) : super(NavigationState(List.of(initialPages))) {
     _pages = List.of(initialPages);
-    for (var interceptor in delegate.interceptors) {
+    delegate._interceptors.addAll(delegate.interceptors);
+    for (var interceptor in delegate._interceptors) {
       interceptor._pushPages = _pushPages;
     }
   }
@@ -60,7 +61,7 @@ class _ContextedNavigator<Event extends NavigationEvent>
   @override
   void add(NavigationEvent event) async {
     bool should = false;
-    for (var interceptor in delegate.interceptors) {
+    for (var interceptor in delegate._interceptors) {
       final res = await interceptor.shouldInterrupt(event, List.of(_pages));
       if (interceptor.isActive && res) {
         should = true;
@@ -76,11 +77,11 @@ class _ContextedNavigator<Event extends NavigationEvent>
   void addEvent(Event event) => add(event);
 
   @override
-  void clearInterceptors() => delegate.interceptors.clear();
+  void clearInterceptors() => delegate._interceptors.clear();
 
   @override
   List<ContextedNavigatorInterceptor> get interceptors =>
-      List.of(delegate.interceptors);
+      List.of(delegate._interceptors);
 
   @override
   void startDeepLink(String uri) =>
@@ -91,11 +92,11 @@ class _ContextedNavigator<Event extends NavigationEvent>
 
   @override
   void addInterceptor(ContextedNavigatorInterceptor interceptor) =>
-      delegate.interceptors.add(interceptor);
+      delegate._interceptors.add(interceptor);
 
   @override
   void removeInterceptor(ContextedNavigatorInterceptor interceptor) =>
-      delegate.interceptors.remove(interceptor);
+      delegate._interceptors.remove(interceptor);
 
   @override
   void pop() => add(NavigationWillPopEvent());

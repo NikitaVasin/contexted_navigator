@@ -64,8 +64,7 @@ class ContextedNavigatorProvider<Event extends NavigationEvent>
         ?.navigator;
   }
 
-  static ContextedNavigator? parentOf<Event extends NavigationEvent>(
-      BuildContext context) {
+  static ContextedNavigator? parentOf(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<
             _ContextedNavigatorInheritedWithoutType>()
