@@ -6,7 +6,11 @@ abstract class ContextedNavigatorInterceptor {
   /// инитиализируется при создании навигатора
   late Function(List<Page> pages) _pushPages;
 
+  BuildContext? _navigatorContext;
+
   Function(List<Page> pages) get pushPages => _pushPages;
+
+  BuildContext? get navigatorContext => _navigatorContext;
 
   /// активен ли прерыватель
   bool isActive = true;

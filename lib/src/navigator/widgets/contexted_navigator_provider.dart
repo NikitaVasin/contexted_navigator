@@ -64,6 +64,13 @@ class ContextedNavigatorProvider<Event extends NavigationEvent>
         ?.navigator;
   }
 
+  static ContextedNavigator? parentOf(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<
+            _ContextedNavigatorInheritedWithoutType>()
+        ?.navigator;
+  }
+
   @override
   _ContextedNavigatorProviderState<Event> createState() =>
       _ContextedNavigatorProviderState<Event>(createDelegate);
@@ -111,6 +118,9 @@ class _ContextedNavigatorProviderState<Event extends NavigationEvent>
       /// и его конекст
       _delegate._navigator = navigator!;
       _delegate._navigatorContext = context;
+      _delegate._interceptors.forEach((element) {
+        element._navigatorContext = context;
+      });
 
       stack = NavigatorStack.of(context);
 
