@@ -34,10 +34,14 @@ class _ContextedNavigator<Event extends NavigationEvent>
     required this.delegate,
     required List<Page> initialPages,
   }) : super(NavigationState(List.of(initialPages))) {
+    on<NavigationDeepLinkEvent>(_produceDeeplinkEvent);
+    on<NavigationPageChangeEvent>(_producePageChangeEvent);
+    on<NavigationWillPopEvent>(_produceWillPopEvent);
+    on<Event>(_produceCustomEvent);
     _pages = List.of(initialPages);
     delegate._interceptors.addAll(delegate.interceptors);
     for (var interceptor in delegate._interceptors) {
-      interceptor._pushPages = _pushPages;
+      interceptor._pushPages = pushPages;
     }
   }
 
@@ -49,9 +53,42 @@ class _ContextedNavigator<Event extends NavigationEvent>
         ?.navigator;
   }
 
-  void _pushPages(List<Page> pages) {
-    _pages = List.of(pages);
-    emit(NavigationState(_pages));
+  Future<void> _produceDeeplinkEvent(
+      NavigationDeepLinkEvent event, Emitter emitter) async {
+    _pages = await delegate.mapDeepLinkToPages(event.uri, List.of(_pages));
+    _notifyChildrenDeepLink(event.uri);
+    _emitPages(emitter);
+  }
+
+  Future<void> _producePageChangeEvent(
+      NavigationPageChangeEvent event, Emitter emitter) async {
+    _pages = event.pages.toList();
+    _emitPages(emitter);
+  }
+
+  Future<void> _produceWillPopEvent(
+      NavigationWillPopEvent event, Emitter emitter) async {
+    _pages = delegate.mapWillPopToPages(List.of(_pages));
+    _emitPages(emitter);
+  }
+
+  Future<void> _produceCustomEvent(
+      Event event, Emitter emitter) async {
+    _pages = delegate.mapEventToPages(event, List.of(_pages));
+    _emitPages(emitter);
+  }
+
+  void _emitPages(Emitter emitter) {
+    assert(_pages.isNotEmpty);
+    for (var page in _pages) {
+      assert(page.key != null);
+    }
+    final keysSet = _pages.map((e) => e.key).toSet().toList();
+    _pages = List.generate(
+      keysSet.length,
+      (index) => _pages.firstWhere((element) => element.key == keysSet[index]),
+    );
+    emitter(NavigationState(_pages));
   }
 
   bool _isNavigatorAllowBack() {
@@ -110,31 +147,5 @@ class _ContextedNavigator<Event extends NavigationEvent>
     if (sendUriList.length > 1) {
       _deepLinkNotifier.value = sendUriList.sublist(1).join('/');
     }
-  }
-
-  @override
-  Stream<NavigationState> mapEventToState(
-    NavigationEvent event,
-  ) async* {
-    if (event is NavigationDeepLinkEvent) {
-      _pages = await delegate.mapDeepLinkToPages(event.uri, List.of(_pages));
-      _notifyChildrenDeepLink(event.uri);
-    } else if (event is NavigationPageChangeEvent) {
-      _pages = event.pages;
-    } else if (event is NavigationWillPopEvent) {
-      _pages = delegate.mapWillPopToPages(List.of(_pages));
-    } else if (event is Event) {
-      _pages = delegate.mapEventToPages(event, List.of(_pages));
-    }
-    assert(_pages.isNotEmpty);
-    for (var page in _pages) {
-      assert(page.key != null);
-    }
-    final keysSet = _pages.map((e) => e.key).toSet().toList();
-    _pages = List.generate(
-      keysSet.length,
-      (index) => _pages.firstWhere((element) => element.key == keysSet[index]),
-    );
-    yield NavigationState(_pages);
   }
 }
